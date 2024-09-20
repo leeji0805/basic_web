@@ -1,59 +1,44 @@
-<!--start-->
+
+<!--3주차 시작-->
+
+
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <title>
-    Example
-  </title>
-  <link href='../assets/style.css' rel='stylesheet' type='text/css'>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
-
 <body>
-  <header class="site-header">
-    <p class="site-title">Turtle Ipsum</p>
-    <p class="site-subtitle">The World's Premier Turtle Fan Club</p>
-  </header>
-  <img src="https://cdn.royalcanin-weshare-online.io/XEAlJ4oBRYZmsWpctAuD/v5/maine-coon-kittens" alt="고양이사진">
-  <nav class="main-nav">
-    <p class="nav-header">Resources</p>
-    <ul class="nav-list">
-      <li class="nav-item nav-item-bull"><a href="https://www.youtube.com/watch?v=CMNry4PE93Y">"I like turtles"</a></li>
-      <li class="nav-item nav-item-bull"><a href="https://en.wikipedia.org/wiki/Turtle">Basic Turtle Info</a></li>
-      <li class="nav-item nav-item-bull"><a href="https://en.wikipedia.org/wiki/Turtles_(chocolate)">Chocolate
-          Turtles</a></li>
-    </ul>
-  </nav>
-  <main class="main-content">
-    <div>
-      <p class="page-title">Welcome to Turtle Ipsum.
-        <a href="">Click here</a> to learn more.
-      </p>
-      <p class="article-text">
-        Turtle ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-        laborum
-      </p>
-    </div>
-  </main>
-  <footer class="footer">
-    <div class="footer-section">
-      <span class="button">Sign up for turtle news</span>
-    </div>
-    <div class="footer-section">
-      <p class="nav-header footer-title">
-        Internal Pages
-      </p>
-      <ul class="nav-list">
-        <li class="nav-item nav-item-bull"><a href="../">Index</a></li>
-        <li class="nav-item nav-item-bull"><a href="../semantic">Semantic Example</a></li>
-      </ul>
-    </div>
-    <p class="footer-copyright">&copy; 2016 Instrument</span>
-      </div>
+  <script>
+    const message = getMessage('Joshua');
+    const M1 = "안녕하세요, 저는 이지현입니다.";
+    const M2 = "컴퓨터 공학을 전공하는 4학년 이에요";
+    const M3 = "열심히 공부해서 좋은 개발자가 되겠습니다.";
+    const messages= [M1,M2,M3]; 
+    
+    let index = 0;
+    function getMessage(name='joshua'){
+      return `Hello,${name}... `;
+    };
+    
+    document.write(message);
+    
+    setInterval(function(){
+      
+      document.write(messages[index%3]);//3초마다 업데이트
+      
+      if (index%3 == 2){
+        setTimeout(
+          function() { // anonymous function
+            document.body.innerHTML = "";
+          },
+          500 // 3000 milliseconds (3 seconds)
+        )
+      }
+      index++;
+    }, 600);
+   
+  </script>
 </body>
-
 </html>
-<!--end-->
