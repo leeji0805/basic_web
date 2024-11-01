@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Typing Game</h1>
+    <p>Practice your typing skills with a quote from Sherlock Holmes. Click
+        **start** to begin!</p>
+    <p id="quote"></p>
+    <p id="message"></p>
+    <div>
+        <input type="text" aria-label="current word" id="typed-value" />
+        <button type="button" id="start">Start</button>
+    </div>
+    <div class="modal" id="score-modal" aria-hidden="true">
+        <div class="modal-overlay"></div>
+        <div class="modal-container" role="dialog" aria-modal="true">
+            <div class="modal-header">
+                <h2 class="modal-title">당신의 점수</h2>
+            </div>
+            <p id="modal-message"></p>
+            <div class="close" id="modal-close" >Close</div>
+
+
+        </div>
+    </div>
+    
+</body>
+
+<script src="script.js"></script>
+</html>
