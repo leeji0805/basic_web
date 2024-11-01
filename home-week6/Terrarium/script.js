@@ -1,53 +1,36 @@
 window.onload = function () {
-  console.log(document.getElementById('plant1'));
-  ['plant1',
-    'plant2',
-    'plant3',
-    'plant4',
-    'plant5',
-    'plant6',
-    'plant7',
-    'plant8',
-    'plant9',
-    'plant10',
-    'plant11',
-    'plant12',
-    'plant13',
-    'plant14'].forEach(id => {
-      dragElement(document.getElementById(id));
-    });
+  ['plant1', 'plant2', 'plant3', 'plant4', 'plant5', 'plant6', 'plant7', 'plant8', 'plant9', 'plant10', 'plant11', 'plant12', 'plant13', 'plant14'].forEach(id => {
+    setupDragAndDrop(document.getElementById(id));
+  });
 
-  function dragElement(terrariumElement) {
-    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  function setupDragAndDrop(terrariumElement) {
     let Z = 1;
     const initialPosition = {
       top: terrariumElement.offsetTop,
       left: terrariumElement.offsetLeft
     };
 
-    terrariumElement.onpointerdown = pointerDrag;
+    terrariumElement.draggable = true;
 
-    function pointerDrag(event) {
-      event.preventDefault();
-      pos3 = event.clientX;
-      pos4 = event.clientY;
-      document.onpointermove = elementDrag;
-      document.onpointerup = stopElementDrag;
+    terrariumElement.addEventListener('dragstart', dragStart);
+    terrariumElement.addEventListener('drag', drag);
+    terrariumElement.addEventListener('dragend', dragEnd);
+
+    function dragStart(e) {
+      e.dataTransfer.setData('text/plain', e.target.id);
+      e.dataTransfer.effectAllowed = 'move';
     }
 
-    function elementDrag(event) {
-      event.preventDefault();
-      pos1 = pos3 - event.clientX;
-      pos2 = pos4 - event.clientY;
-      pos3 = event.clientX;
-      pos4 = event.clientY;
-      terrariumElement.style.top = (terrariumElement.offsetTop - pos2) + "px";
-      terrariumElement.style.left = (terrariumElement.offsetLeft - pos1) + "px";
+    function drag(e) {
+      e.preventDefault();
     }
 
-    function stopElementDrag() {
-      document.onpointerup = null;
-      document.onpointermove = null;
+    function dragEnd(e) {
+      const x = e.clientX;
+      const y = e.clientY;
+      terrariumElement.style.position = 'absolute';
+      terrariumElement.style.left = x + 'px';
+      terrariumElement.style.top = y + 'px';
     }
 
     terrariumElement.ondblclick = bringToFront;
@@ -59,7 +42,6 @@ window.onload = function () {
     terrariumElement.oncontextmenu = function (event) {
       event.preventDefault();
       if (confirm('이 요소를 삭제하시겠습니까?')) {
-        stopElementDrag();
         terrariumElement.style.display = 'none';
         setTimeout(() => {
           terrariumElement.style.top = initialPosition.top + 'px';
@@ -70,4 +52,17 @@ window.onload = function () {
       }
     };
   }
+
+  // Set up drop zone (the entire document in this case)
+  document.addEventListener('dragover', function(e) {
+    e.preventDefault(); // Necessary to allow dropping
+  });
+
+  document.addEventListener('drop', function(e) {
+    e.preventDefault();
+    const id = e.dataTransfer.getData('text');
+    const draggableElement = document.getElementById(id);
+    draggableElement.style.left = e.clientX + 'px';
+    draggableElement.style.top = e.clientY + 'px';
+  });
 };
