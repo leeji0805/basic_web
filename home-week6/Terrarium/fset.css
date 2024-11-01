@@ -30,6 +30,7 @@ body {
     bottom: 0.5%;
     left: 20%;
     opacity: 0.5;
+    z-index: 1;
 }
 .jar-top {
     width: 50%;
@@ -39,6 +40,7 @@ body {
     bottom: 80.5%;
     left: 25%;
     opacity: 0.7;
+    z-index: 1;
 }
 .jar-bottom {
     width: 50%;
@@ -58,11 +60,13 @@ body {
     bottom: 1%;
     left: 20%;
     opacity: 0.7;
+    z-index: -1;
 }
 
 .plant-holder {
     position: relative;
     height: 13%;
+    z-index: 2;
 }
 .plant {
     position: absolute;
@@ -82,6 +86,7 @@ body {
     bottom: 20%;
     left: 5%;
     opacity: 0.7;
+    z-index: 1;
 }
 
 .jar-glossy-short {
