@@ -1,0 +1,151 @@
+/* 기본 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 350px;
+    background-color: #f4f4f4;
+
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+img {
+    padding-top: 9%;
+    padding-bottom: 5%;
+    padding-left: 4%;
+    max-width: 84%;
+    height: auto;
+}
+
+/* 제목 스타일 */   
+h1 {
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: lighter;
+}
+
+h2 {
+    margin-top: 0%;
+    font-size: 1.4rem;
+    color: #333;
+    font-weight: normal;
+}
+
+/* 폼 스타일 */
+.form-data {
+    margin-top: 0%;
+    width: 100%;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"] {
+    width: calc(50%);
+    background: #eeeeee;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 0px
+}
+
+/* 버튼 스타일 */
+.search-btn {
+    font-size: 1rem;
+    background-color: #007bff;
+    /* 파란색 버튼 */
+    color: white;
+    padding: 10px 10px;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.search-btn:hover {
+    background-color: #0056b3;
+}
+
+.result {
+    display: none;
+    margin-top: 20px;
+}
+
+.result-container p {
+    font-size: 1rem;
+}
+
+.clear-btn {
+    background-color: #ff4d4d;
+    /*리전 바꾸는 버튼 */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+/* 로딩 및 에러 메시지 스타일 */
+.loading,
+.errors,
+.data {
+    display: none;
+}
+
+
+@media (prefers-color-scheme: dark)
+{
+    body {
+        background-color: #333;
+    }
+
+    .container {
+        background-color: #444;
+    }
+
+    h1, h2 {
+        color: white;
+    }
+
+    input[type="text"] {
+        background: #555;
+        color: white;
+    }
+
+    .search-btn {
+        background-color: #007bff;
+    }
+
+    .search-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .result-container p {
+        color: white;
+    }
+
+    .clear-btn {
+        background-color: #ff4d4d;
+    }
+
+    .loading,
+    .errors,
+    .data {
+        color: white;
+    }
+}
