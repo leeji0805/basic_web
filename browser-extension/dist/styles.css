@@ -1,151 +1,143 @@
-/* 기본 스타일 */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 350px;
-    background-color: #f4f4f4;
-
-}
-
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-img {
-    padding-top: 9%;
-    padding-bottom: 5%;
-    padding-left: 4%;
-    max-width: 84%;
-    height: auto;
-}
-
-/* 제목 스타일 */   
-h1 {
-    font-size: 1.5rem;
-    color: #333;
-    font-weight: lighter;
-}
-
-h2 {
-    margin-top: 0%;
-    font-size: 1.4rem;
-    color: #333;
-    font-weight: normal;
-}
-
-/* 폼 스타일 */
-.form-data {
-    margin-top: 0%;
-    width: 100%;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input[type="text"] {
-    width: calc(50%);
-    background: #eeeeee;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 0px
-}
-
-/* 버튼 스타일 */
-.search-btn {
-    font-size: 1rem;
-    background-color: #007bff;
-    /* 파란색 버튼 */
-    color: white;
-    padding: 10px 10px;
-    border-radius: 0.5rem;
-    border: none;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
-
-.search-btn:hover {
-    background-color: #0056b3;
+	margin: 1.5em;
+	text-align: center;
 }
 
 .result {
-    display: none;
-    margin-top: 20px;
-}
-
-.result-container p {
-    font-size: 1rem;
+	margin-top: 1em;
 }
 
 .clear-btn {
-    background-color: #ff4d4d;
-    /*리전 바꾸는 버튼 */
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
+	text-align: center;
+	margin: 0 auto;
 }
 
-/* 로딩 및 에러 메시지 스타일 */
-.loading,
-.errors,
-.data {
-    display: none;
+/*basic css*/
+/* courtesy of: https://github.com/vladocar/Basic.css */
+
+* {
+	box-sizing: border-box;
 }
 
+:root {
+	--sans: 1em/1.6 system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+		Droid Sans, Helvetica Neue, Fira Sans, sans-serif;
+	--mono: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier, 'Courier New', monospace;
+	--c1: #0074d9;
+	--c2: #eee;
+	--c3: #fff;
+	--c4: #000;
+	--c5: #fff;
+	--m1: 8px;
+	--rc: 8px;
+}
 
-@media (prefers-color-scheme: dark)
-{
-    body {
-        background-color: #333;
-    }
+@media (prefers-color-scheme: dark) {
+	:root {
+		--c2: #333;
+		--c3: #1e1f20;
+		--c4: #fff;
+	}
+}
 
-    .container {
-        background-color: #444;
-    }
+html {
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
 
-    h1, h2 {
-        color: white;
-    }
+/* General settings */
 
-    input[type="text"] {
-        background: #555;
-        color: white;
-    }
+body {
+	margin: 0;
+	font: var(--sans);
+	font-weight: 400;
+	font-style: normal;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	background-color: var(--c3);
+	color: var(--c4);
+	min-width: 300px;
+}
+img,
+iframe {
+	border: none;
+	max-width: 100%;
+}
 
-    .search-btn {
-        background-color: #007bff;
-    }
+a {
+	color: var(--c1);
+	text-decoration: none;
+}
 
-    .search-btn:hover {
-        background-color: #0056b3;
-    }
+a:hover {
+	color: var(--c1);
+	text-decoration: underline;
+}
 
-    .result-container p {
-        color: white;
-    }
+/* Headlines */
 
-    .clear-btn {
-        background-color: #ff4d4d;
-    }
+h1,
+h2 {
+	margin: 0.6em 0;
+	font-weight: normal;
+}
 
-    .loading,
-    .errors,
-    .data {
-        color: white;
-    }
+h1 {
+	font-size: 1.5em;
+	line-height: 1.2;
+}
+
+h2 {
+	font-size: 1.4em;
+	line-height: 1.2;
+}
+
+/* Rounded Corners*/
+
+input,
+button,
+img {
+	border-radius: var(--rc);
+	margin: 5px;
+}
+
+/* Forms */
+
+input,
+select,
+textarea {
+	font-size: 1em;
+	color: var(--c4);
+	background: var(--c2);
+	border: 0;
+	padding: 0.6em;
+}
+
+label {
+	font-weight: bold;
+	text-align: left;
+}
+
+button,
+input[type='submit'],
+input[type='reset'],
+input[type='button'] {
+	-webkit-appearance: none;
+	font-size: 1em;
+	display: inline-block;
+	color: var(--c5);
+	background: var(--c1);
+	border: 0;
+	margin: 4px;
+	padding: 0.6em;
+	cursor: pointer;
+	text-align: center;
+}
+
+button:hover,
+button:focus,
+input:hover,
+textarea:hover,
+select:hover {
+	opacity: 0.8;
 }
