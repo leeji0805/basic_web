@@ -9,9 +9,6 @@ const apiKey = document.querySelector('.api-key');
 const errors = document.querySelector('.errors');
 const loading = document.querySelector('.loading');
 const results = document.querySelector('.result-container');
-const usage = document.querySelector('.carbon-usage');
-const fossilfuel = document.querySelector('.fossil-fuel');
-const myregion = document.querySelector('.my-region');
 const clearBtn = document.querySelector('.clear-btn');
 
 const calculateColor = async (value) => {
@@ -31,63 +28,59 @@ const calculateColor = async (value) => {
 	chrome.runtime.sendMessage({ action: 'updateIcon', value: { color: closestColor } });
 };
 
-const displayCarbonUsage = async (apiKey, region) => {
-	try {
-		await axios
-			.get('https://api.co2signal.com/v1/latest', {
-				params: {
-					countryCode: region,
-				},
-				headers: {
-					//please get your own token from CO2Signal https://www.co2signal.com/
-					'auth-token': apiKey,
-				},
-			})
-			.then((response) => {
-				let CO2 = Math.floor(response.data.data.carbonIntensity);
+const displayCarbonUsageForRegions = async (apiKey, regions) => {
+	const regionList = regions.split(',').map(region => region.trim());
+	results.innerHTML = ''; // 결과 초기화
 
-				calculateColor(CO2);
-
-				loading.style.display = 'none';
-				form.style.display = 'none';
-				myregion.textContent = region;
-				usage.textContent =
-					Math.round(response.data.data.carbonIntensity) + ' grams (grams C02 emitted per kilowatt hour)';
-				fossilfuel.textContent =
-					response.data.data.fossilFuelPercentage.toFixed(2) +
-					'% (percentage of fossil fuels used to generate electricity)';
-				results.style.display = 'block';
+	for (const region of regionList) {
+		try {
+			const response = await axios.get('https://api.co2signal.com/v1/latest', {
+				params: { countryCode: region },
+				headers: { 'auth-token': apiKey },
 			});
-	} catch (error) {
-		console.log(error);
-		loading.style.display = 'none';
-		results.style.display = 'none';
-		errors.textContent = 'Sorry, we have no data for the region you have requested.';
+			
+			const CO2 = Math.floor(response.data.data.carbonIntensity);
+			calculateColor(CO2);
+			const fossilFuel = response.data.data.fossilFuelPercentage.toFixed(2);
+
+			// 결과 표시
+			results.innerHTML += `
+		  <div>
+			<h3>Region: ${region}</h3>
+			<p>Carbon Intensity: ${CO2} grams CO2/kWh</p>
+			<p>Fossil Fuel Percentage: ${fossilFuel}%</p>
+		  </div>
+		`;
+		} catch (error) {
+			results.innerHTML += `<div><h3>Region: ${region}</h3><p>Error fetching data.</p></div>`;
+		}
 	}
 };
 
-// set up api key and region
-const setUpUser = async (apiKey, region) => {
-	localStorage.setItem('apiKey', apiKey);
-	localStorage.setItem('region', region);
-	loading.style.display = 'block';
-	errors.textContent = '';
-	clearBtn.style.display = 'block';
-	//make initial call
-	displayCarbonUsage(apiKey, region);
-};
-
-// handle form submission
+// 폼 제출 핸들러 수정
 const handleSubmit = async (e) => {
 	e.preventDefault();
 	setUpUser(apiKey.value, region.value);
 };
 
+const setUpUser = async (apiKey, regions) => {
+	localStorage.setItem('apiKey', apiKey);
+	localStorage.setItem('regions', regions);
+	loading.style.display = 'block';
+	errors.textContent = '';
+	clearBtn.style.display = 'block';
+
+	// 여러 국가 데이터 요청
+	await displayCarbonUsageForRegions(apiKey, regions);
+	init();
+};
+
 //initial checks
 const init = async () => {
-	//if anything is in localStorage, pick it up
 	const storedApiKey = localStorage.getItem('apiKey');
-	const storedRegion = localStorage.getItem('region');
+	const storedRegions = localStorage.getItem('regions');
+
+
 
 	//set icon to be generic green
 	chrome.runtime.sendMessage({
@@ -97,26 +90,25 @@ const init = async () => {
 		},
 	});
 
-	if (storedApiKey === null || storedRegion === null) {
-		//if we don't have the keys, show the form
+	if (storedApiKey === null || storedRegions === null) {
 		form.style.display = 'block';
 		results.style.display = 'none';
 		loading.style.display = 'none';
 		clearBtn.style.display = 'none';
 		errors.textContent = '';
 	} else {
-		//if we have saved keys/regions in localStorage, show results when they load
-		results.style.display = 'none';
 		form.style.display = 'none';
-		displayCarbonUsage(storedApiKey, storedRegion);
+		await displayCarbonUsageForRegions(storedApiKey, storedRegions);
+		loading.style.display = 'none';
 		clearBtn.style.display = 'block';
+		results.style.display = 'block';
 	}
 };
 
 const reset = async (e) => {
 	e.preventDefault();
 	//clear local storage for region only
-	localStorage.removeItem('region');
+	localStorage.removeItem('regions');
 	init();
 };
 
