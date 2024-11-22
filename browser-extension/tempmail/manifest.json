@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Enhanced Temp Mail Extension",
+  "version": "1.5",
+  "description": "Temporary email, JavaScript toggle, and fake face generator",
+  "permissions": ["activeTab", "scripting", "storage", "contentSettings"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "index.html"
+    
+  }
+}
