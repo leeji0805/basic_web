@@ -216,9 +216,11 @@ window.onload = async () => {
         ctx.fillStyle = pattern;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
         drawGameObjects(ctx);
         drawPoints();
         drawLife();
+        updateHeroMovement();
         updateGameObjects(); // 충돌 감지
     }, 100)
 };
@@ -393,6 +395,7 @@ function resetGame() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = pattern;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+            updateHeroMovement();
             drawPoints();
             drawLife();
             updateGameObjects();
@@ -415,10 +418,6 @@ function loadNextStage() {
 // 이벤트 리슨 핸들러
 
 const Messages = {
-    KEY_EVENT_UP: 'KEY_EVENT_UP',
-    KEY_EVENT_DOWN: 'KEY_EVENT_DOWN',
-    KEY_EVENT_LEFT: 'KEY_EVENT_LEFT',
-    KEY_EVENT_RIGHT: 'KEY_EVENT_RIGHT',
     KEY_EVENT_SPACE: 'KEY_EVENT_SPACE',
     COLLISION_ENEMY_LASER: 'COLLISION_ENEMY_LASER',
     COLLISION_ENEMY_HERO: 'COLLISION_ENEMY_HERO',
@@ -441,14 +440,44 @@ let gameLoopId,
     lifeImg,
     laserGreenShot,
     eventEmitter = new EventEmitter();
+const keyState = {}; // 키 상태 저장 객체
+
+window.addEventListener('keydown', (e) => {
+    keyState[e.key] = true; // 키가 눌렸음을 기록
+    e.preventDefault(); // 기본 동작 방지
+    handleImmediateMovement(e.key);
+});
+
+window.addEventListener('keyup', (e) => {
+    keyState[e.key] = false; // 키가 떼졌음을 기록
+    e.preventDefault(); // 기본 동작 방지
+});
+
+function handleImmediateMovement(key) {
+    const speed = 5; // 이동 속도
+
+    if (key === 'ArrowUp') {
+        hero.y -= speed;
+        helper1.y -= speed;
+        helper2.y -= speed;
+    } else if (key === 'ArrowDown') {
+        hero.y += speed;
+        helper1.y += speed;
+        helper2.y += speed;
+    } else if (key === 'ArrowLeft') {
+        hero.x -= speed;
+        helper1.x -= speed;
+        helper2.x -= speed;
+    } else if (key === 'ArrowRight') {
+        hero.x += speed;
+        helper1.x += speed;
+        helper2.x += speed;
+    }
+}
 
 let onKeyDown = function (e) {
     console.log(e.keyCode);
     switch (e.keyCode) {
-        case 37: // 왼쪽 화살표
-        case 39: // 오른쪽 화살표
-        case 38: // 위쪽 화살표
-        case 40: // 아래쪽 화살표
         case 32: // 스페이스바
             e.preventDefault();
             break;
@@ -459,21 +488,39 @@ let onKeyDown = function (e) {
 window.addEventListener('keydown', onKeyDown);
 
 window.addEventListener("keyup", (evt) => {
-    if (evt.key === "ArrowUp") {
-        eventEmitter.emit(Messages.KEY_EVENT_UP);
-    } else if (evt.key === "ArrowDown") {
-        eventEmitter.emit(Messages.KEY_EVENT_DOWN);
-    } else if (evt.key === "ArrowLeft") {
-        eventEmitter.emit(Messages.KEY_EVENT_LEFT);
-    } else if (evt.key === "ArrowRight") {
-        eventEmitter.emit(Messages.KEY_EVENT_RIGHT);
-    } else if (evt.key === ' ' || evt.code === 'Space') {
+    if (evt.key === ' ' || evt.code === 'Space') {
         eventEmitter.emit(Messages.KEY_EVENT_SPACE);
     }
     else if (evt.code === "Enter") {
         eventEmitter.emit(Messages.KEY_EVENT_ENTER);
     }
-});
+}); 
+
+function updateHeroMovement() {
+    const speed = 5; // 이동 속도
+
+    if (keyState['ArrowUp']) {
+        hero.y -= speed;
+        helper1.y -= speed;
+        helper2.y -= speed;
+    }
+    if (keyState['ArrowDown']) {
+        hero.y += speed;
+        helper1.y += speed;
+        helper2.y += speed;
+    }
+    if (keyState['ArrowLeft']) {
+        hero.x -= speed;
+        helper1.x -= speed;
+        helper2.x -= speed;
+    }
+    if (keyState['ArrowRight']) {
+        hero.x += speed;
+        helper1.x += speed;
+        helper2.x += speed;
+    }
+}
+
 
 
 
@@ -519,27 +566,7 @@ function initGame() {
     eventEmitter.on(Messages.GAME_END_LOSS, () => {
         endGame(false);
     });
-    eventEmitter.on(Messages.KEY_EVENT_UP, () => {
-        hero.y -= 5;
-        helper1.y -= 5;
-        helper2.y -= 5;
-    })
-    eventEmitter.on(Messages.KEY_EVENT_DOWN, () => {
-        hero.y += 5;
-        helper1.y += 5;
-        helper2.y += 5;
-    });
-    eventEmitter.on(Messages.KEY_EVENT_LEFT, () => {
-        hero.x -= 5;
-        helper1.x -= 5;
-        helper2.x -= 5;
-    });
-    eventEmitter.on(Messages.KEY_EVENT_RIGHT, () => {
-        hero.x += 5;
-        helper1.x += 5;
-        helper2.x += 5;
-    });
-
+    
 
     eventEmitter.on(Messages.COLLISION_ENEMY_HERO, (_, { enemy }) => {
         enemy.dead = true;
